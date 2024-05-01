@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "895284891256",
+    "project_id": "fluttersfirecrud",
+    "storage_bucket": "fluttersfirecrud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895284891256:android:f265722eaa9d6147ace78d",
+        "android_client_info": {
+          "package_name": "com.example.flutterlist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcIKBwZfvn9QR1dMHiHN_OdQmAl3L1QrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
