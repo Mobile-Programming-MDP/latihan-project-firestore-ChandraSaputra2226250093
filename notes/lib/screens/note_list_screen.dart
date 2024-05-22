@@ -89,9 +89,12 @@ class NoteList extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 //open url launcher
-                                String url = "https://www.google.com/maps/search/?api=1&qeury=${document!.lat},${document.lng}";
+                                String url =
+                                    "https://www.google.com/maps/search/?api=1&query=${document.lat},${document.lng}";
+                                Uri uri = Uri.parse(url);
+                                _launchUrl(uri);
                               },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -123,9 +126,9 @@ class NoteList extends StatelessWidget {
     );
   }
 
-  Future<void> _lauchUri(_url) async {
+  Future<void> _launchUrl(_url) async {
     if (!await launchUrl(_url)) {
-      throw Exception('Cloud Not Launch $_url');
+      throw Exception('Could not launch $_url');
     }
   }
 
