@@ -17,11 +17,6 @@ class NoteService {
     try {
       String fileName = path.basename(imageFile.path);
       Reference ref = _storage.ref().child('images').child('/$fileName');
-      // Reference ref = _storage.ref().child('images/$fileName');
-      // atau
-      // Reference ref = _storage.ref()
-      // .child('images')
-      // .child('/$fileName');
       UploadTask uploadTask;
       if (kIsWeb) {
         uploadTask = ref.putData(await imageFile.readAsBytes());
@@ -42,6 +37,8 @@ class NoteService {
       'title': note.title,
       'description': note.description,
       'image_url': note.imageUrl,
+      'lat': note.lat,
+      'lng': note.lng,
       'created_at': FieldValue.serverTimestamp(),
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -53,6 +50,8 @@ class NoteService {
       'title': note.title,
       'description': note.description,
       'image_url': note.imageUrl,
+      'lat': note.lat,
+      'lng': note.lng,
       'created_at': note.createdAt,
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -77,6 +76,8 @@ class NoteService {
           title: data['title'],
           description: data['description'],
           imageUrl: data['image_url'],
+          lat: data['lat'],
+          lng: data['lng'],
           createdAt: data['created_at'] != null
               ? data['created_at'] as Timestamp
               : null,
