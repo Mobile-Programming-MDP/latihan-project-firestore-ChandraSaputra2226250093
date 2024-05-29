@@ -16,3 +16,9 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+// plugins {
+//     id "dev.flutter.flutter-plugin-loader" version: "1.0.0"
+//     id "com.android.application" version "7.3.3" apply false
+//     id "org.jetbrains."
+// }
