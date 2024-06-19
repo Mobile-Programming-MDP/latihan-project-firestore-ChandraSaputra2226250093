@@ -1,3 +1,4 @@
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,94 +39,99 @@ class _NoteDialogState extends State<NoteDialog> {
   }
 
   Future<void> _pickImage() async {
-  final picker = ImagePicker();
-  final pickedFile = await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Choose Image Source'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text('Camera'),
-              onTap: () async {
-                Navigator.of(context).pop(await picker.pickImage(source: ImageSource.camera));
-              },
-            ),
-            ListTile(
-              title: Text('Gallery'),
-              onTap: () async {
-                Navigator.of(context).pop(await picker.pickImage(source: ImageSource.gallery));
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-  if (pickedFile != null) {
-    setState(() {
-      _imageFile = pickedFile;
-    });
+    final picker = ImagePicker();
+    final pickedFile = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose Image Source'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text('Camera'),
+                onTap: () async {
+                  Navigator.of(context)
+                      .pop(await picker.pickImage(source: ImageSource.camera));
+                },
+              ),
+              ListTile(
+                title: Text('Gallery'),
+                onTap: () async {
+                  Navigator.of(context)
+                      .pop(await picker.pickImage(source: ImageSource.gallery));
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.note == null ? 'Add Notes' : 'Update Notes'),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Title: ',
-            textAlign: TextAlign.start,
-          ),
-          TextField(
-            controller: _titleController,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text(
-              'Description: ',
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Title: ',
+              textAlign: TextAlign.start,
             ),
-          ),
-          TextField(
-            controller: _descriptionController,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(
-              top: 20,
+            TextField(
+              controller: _titleController,
             ),
-            child: Text('Image: '),
-          ),
-          Expanded(
-            child: _imageFile != null
-                ? Image.network(_imageFile!.path, fit: BoxFit.cover)
-                : (widget.note?.imageUrl != null &&
-                        Uri.parse(widget.note!.imageUrl!).isAbsolute
-                    ? Image.network(
-                        widget.note!.imageUrl!,
-                        fit: BoxFit.cover,
-                      )
-                    : Container()),
-          ),
-          TextButton(
-            onPressed: _pickImage,
-            child: const Text('Pick Image'),
-          ),
-          TextButton(
-            onPressed: _getLocation,
-            child: const Text('Get Location'),
-          ),
-          Text(
-            _position?.latitude != null && _position?.longitude != null
-                ? "Current Location : ${_position!.latitude.toString()}, ${_position!.longitude.toString()}"
-                : "Current Location : ${widget.note?.lat}, ${widget.note?.lng}",
-            textAlign: TextAlign.start,
-          )
-        ],
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                'Description: ',
+              ),
+            ),
+            TextField(
+              controller: _descriptionController,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(
+                top: 20,
+              ),
+              child: Text('Image: '),
+            ),
+            Container(
+              height: 200, // Set a fixed height for the image display area
+              child: _imageFile != null
+                  ? Image.file(io.File(_imageFile!.path), fit: BoxFit.cover)
+                  : (widget.note?.imageUrl != null &&
+                          Uri.parse(widget.note!.imageUrl!).isAbsolute
+                      ? Image.network(
+                          widget.note!.imageUrl!,
+                          fit: BoxFit.cover,
+                        )
+                      : Container()),
+            ),
+            TextButton(
+              onPressed: _pickImage,
+              child: const Text('Pick Image'),
+            ),
+            TextButton(
+              onPressed: _getLocation,
+              child: const Text('Get Location'),
+            ),
+            Text(
+              _position?.latitude != null && _position?.longitude != null
+                  ? "Current Location : ${_position!.latitude.toString()}, ${_position!.longitude.toString()}"
+                  : "Current Location : ${widget.note?.lat}, ${widget.note?.lng}",
+              textAlign: TextAlign.start,
+            )
+          ],
+        ),
       ),
       actions: [
         Padding(
